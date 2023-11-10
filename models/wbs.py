@@ -21,4 +21,4 @@ def get_wbs(folder):
      df['Avance'] = df['Avance'].fillna(0)
      df['LB Costo COP'] = df['LB Costo COP'].fillna(0)
 
-     return df
+     return df, mask

@@ -29,10 +29,11 @@ def ac_cleaner(folder, sheet):
      # Itera sobre el DataFrame
      for i, row in df.iterrows():
           key = str(row['Proyecto']) + '.' + str(row['ACTIVIDAD'])
+          key = 1
           if key in dict_replace:
                df.at[i, 'WBS'] = dict_replace[key]
      
-     df_grouped = df.groupby('Proveedor').agg({'Proveedor':'size','ACTIVIDAD':'first', 'WBS':'first', 'Valor':'sum'})
+     df_grouped = df.groupby('Proveedor').agg({'Proveedor':'size','ACTIVIDAD':'first', 'Proyecto':'first','WBS':'first', 'Valor':'sum'})
 
 
 
