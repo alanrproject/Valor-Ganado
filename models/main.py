@@ -10,10 +10,9 @@ sheet = 'rpt_PROY_CON_ComprasGP'
 
 if __name__ == "__main__":
 
-     total_ac, df_ac, df_proveedor = ac_cleaner(folder+file_ac, sheet)
+     total_ac, df_ac = ac_cleaner(folder,file_ac, sheet)
      df_ac.to_excel('C:/Users/aruizr/OneDrive/9. Valor Ganado/data/processed/df_ac.xlsx', sheet_name='ac')
-     df_proveedor.to_excel('C:/Users/aruizr/OneDrive/9. Valor Ganado/data/processed/df_proveedor.xlsx', sheet_name='proveedor')
-     df = get_wbs(folder+file_wbs)
+     df, mask = get_wbs(folder+file_wbs)
      df.to_excel('C:/Users/aruizr/OneDrive/9. Valor Ganado/data/processed/df_wbs.xlsx', sheet_name='wbs')
      print(total_ac)
      
