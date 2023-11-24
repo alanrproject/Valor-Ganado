@@ -35,6 +35,22 @@ app.layout = html.Div([
      Input('date-picker', 'end_date'),
      Input('wbs-dropdown', 'value')]
 )
+
+def linear_approx(start, end, slope):
+    # Calculate the length of the series
+    length = len(end) - len(start)
+    
+    # Create an empty array to store the predicted values
+    prediction = np.zeros(length)
+    
+    # Loop through the array and fill it with the linear equation
+    for i in range(length):
+        prediction[i] = start + slope * i
+    
+    # Return the prediction array
+    return prediction
+
+
 def update_graph(start_date, end_date, wbs_value):
     mask = (df['Fecha'] >= start_date) & (df['Fecha'] <= end_date) & (df['WBS'] == wbs_value)
     data = df.loc[mask]
@@ -49,6 +65,9 @@ def update_graph(start_date, end_date, wbs_value):
     # Adjust the 'EACt' series to end at the 'EAC' value of the selected end date
     adjustment_factor = eact_data.loc[eact_data.index[-1], 'EAC'] / eact_data.loc[eact_data.index[-1], 'EACt']
     eact_data['EACt'] *= adjustment_factor
+    
+    # Use the function to predict the 'EACt' values
+    eact_data['EACt'] = linear_approx(start_value, eact_data, slope)
     
     traces = [
         go.Scatter(
@@ -79,6 +98,7 @@ def update_graph(start_date, end_date, wbs_value):
     ]
     
     return {'data': traces, 'layout': go.Layout(title='AcAcum, PV, EV, EACt over time')}
+
 
 if __name__ == '__main__':
     app.run_server(debug=True, dev_tools_serve_dev_bundles=False)
