@@ -22,7 +22,7 @@ def linear_approx(x, start, end):
     return prediction
 
 # Lee el dataframe base
-df = pd.read_excel('C:/Users/aruizr/OneDrive/9. Valor Ganado/data/processed/df_wbs_pr.xlsx')
+df = pd.read_excel('C:/Users/aruizr/OneDrive/9. Valor Ganado/data/procesed/df_wbs_pr.xlsx')
 #df = pd.read_excel('/Users/ramonalzate/Downloads/9. Valor Ganado/data/processed/df_wbs_pr.xlsx')
 app = dash.Dash(__name__)
 
@@ -193,8 +193,8 @@ def update_graph(start_date, end_date, wbs_value):
     mask = (df['Fecha'] >= start_date) & (df['Fecha'] <= end_date) & (df['WBS'] == wbs_value)
     data = df.loc[mask]
     N_end_date= data.loc[data.index[(len(data.index)-1)],'FechaFin']
-    # newdate = pd.dataframe({'WBS':[wbs_value], 'Fecha':[N_end_date]})
-    # df = pd.concat([df,newdate],ignore_index=True)
+    newdate = pd.dataframe({'WBS':[wbs_value], 'Fecha':[N_end_date]})
+    df = pd.concat([df,newdate],ignore_index=True)
 
     # Filter the 'PV' series based on the selected 'WBS' value
     pv_data = df.loc[df['WBS'] == wbs_value]
