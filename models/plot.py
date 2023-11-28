@@ -193,14 +193,15 @@ def update_graph(start_date, end_date, wbs_value):
     mask = (df['Fecha'] >= start_date) & (df['Fecha'] <= end_date) & (df['WBS'] == wbs_value)
     data = df.loc[mask]
     N_end_date= data.loc[data.index[(len(data.index)-1)],'FechaFin']
-    newdate = pd.dataframe({'WBS':[wbs_value], 'Fecha':[N_end_date]})
-    df = pd.concat([df,newdate],ignore_index=True)
+      
 
     # Filter the 'PV' series based on the selected 'WBS' value
     pv_data = df.loc[df['WBS'] == wbs_value]
     
     # Calculate the 'EACt' series from 'end_date' to the last date
     eact_data = df.loc[(df['Fecha'] >= end_date) & (df['Fecha'] <= N_end_date) & (df['WBS'] == wbs_value)].copy()
+    newdate = pd.DataFrame({'WBS':[wbs_value], 'Fecha':[N_end_date]})
+    eact_data = pd.concat([eact_data,newdate],ignore_index=True)
     vectors_to_proyect = {'AcAcum':'EAC', 'EV':'LB Costo COP'}
     for key,value in vectors_to_proyect.items():
         start_value = df.loc[(df['Fecha'] == end_date) & (df['WBS'] == wbs_value), key].values[0]
