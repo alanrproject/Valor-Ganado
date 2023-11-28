@@ -7,32 +7,32 @@ attrs
 backcall
 binaryornot
 blinker
-boltons @ file:///C:/b/abs_707eo7c09t/croot/boltons_1677628723117/work
-Bottleneck @ file:///C:/Windows/Temp/abs_3198ca53-903d-42fd-87b4-03e6d03a8381yfwsuve8/croots/recipe/bottleneck_1657175565403/work
+boltons
+Bottleneck
 brotlipy
 cachetools
 certifi
-cffi @ file:///C:/b/abs_49n3v2hyhr/croot/cffi_1670423218144/work
+cffi
 chardet
-charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
+charset-normalizer
 click
-colorama @ file:///C:/b/abs_a9ozq0l032/croot/colorama_1672387194846/work
+colorama
 comm
-conda @ file:///D:/bld/conda_1685035341939/work
-conda-content-trust @ file:///C:/Windows/TEMP/abs_4589313d-fc62-4ccc-81c0-b801b4449e833j1ajrwu/croots/recipe/conda-content-trust_1658126379362/work
-conda-package-handling @ file:///C:/b/abs_ce4_vcfd0y/croot/conda-package-handling_1685024800103/work
-conda_package_streaming @ file:///C:/b/abs_88a7k_wmm1/croot/conda-package-streaming_1685019697115/work
+conda
+conda-content-trust
+conda-package-handling
+conda_package_streaming
 contourpy
 cookiecutter
-cryptography @ file:///C:/b/abs_8ecplyc3n2/croot/cryptography_1677533105000/work
+cryptography
 cycler
-dash
+dash == 2.14.1
 dash-core-components
 dash-html-components
 dash-table
 debugpy
 decorator
-distro @ file:///tmp/build/80754af9/distro_1610479853857/work
+distro
 et-xmlfile
 exceptiongroup
 executing
@@ -40,7 +40,8 @@ Flask
 fonttools
 gitdb
 GitPython
-idna @ file:///C:/b/abs_bdhbebrioa/croot/idna_1666125572046/work
+gunicorn
+idna
 importlib-metadata
 install
 ipykernel
@@ -49,28 +50,28 @@ itsdangerous
 jedi
 Jinja2
 joblib
-jsonpatch @ file:///tmp/build/80754af9/jsonpatch_1615747632069/work
+jsonpatch
 jsonpointer
 jsonschema
 jsonschema-specifications
 jupyter_client
 jupyter_core
 kiwisolver
-lxml @ file:///C:/b/abs_c2bg6ck92l/croot/lxml_1679646459966/work
+lxml
 markdown-it-py
 MarkupSafe
 matplotlib
 matplotlib-inline
 mdurl
-menuinst @ file:///C:/Users/BUILDE~1/AppData/Local/Temp/abs_455sf5o0ct/croots/recipe/menuinst_1661805970842/work
+menuinst
 mkl-fft
-mkl-random @ file:///C:/Users/dev-admin/mkl/mkl_random_1682977971003/work
+mkl-random
 mkl-service
 nest-asyncio
-numexpr @ file:///C:/b/abs_afm0oewmmt/croot/numexpr_1683221839116/work
-numpy @ file:///C:/Users/dev-admin/mkl/numpy_and_numpy_base_1682982345978/work
+numexpr
+numpy
 openpyxl
-packaging @ file:///C:/b/abs_ed_kb9w6g4/croot/packaging_1678965418855/work
+packaging
 pandas
 parso
 patsy
@@ -79,61 +80,61 @@ pickleshare
 Pillow
 platformdirs
 plotly
-pluggy @ file:///C:/ci/pluggy_1648042746254/work
+pluggy
 prompt-toolkit
 protobuf
 psutil
 pure-eval
 pyarrow
-pycosat @ file:///C:/b/abs_4b1rrw8pn9/croot/pycosat_1666807711599/work
-pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pycosat
+pycparser
 pydeck
 Pygments
 pyinstaller
 pyinstaller-hooks-contrib
-pyOpenSSL @ file:///C:/b/abs_552w85x1jz/croot/pyopenssl_1677607703691/work
+pyOpenSSL
 pyparsing
-PySocks @ file:///C:/ci_310/pysocks_1642089375450/work
-python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
-python-docx @ file:///home/conda/feedstock_root/build_artifacts/python-docx_1622121039670/work
+PySocks
+python-dateutil
+python-docx
 python-slugify
-pytz @ file:///C:/b/abs_22fofvpn1x/croot/pytz_1671698059864/work
+pytz
 pywin32
 pywin32-ctypes
 PyYAML
 pyzmq
 referencing
-requests @ file:///C:/b/abs_41owkd5ymz/croot/requests_1682607524657/work
+requests
 retrying
 rich
 rpds-py
-ruamel.yaml @ file:///C:/b/abs_30ee5qbthd/croot/ruamel.yaml_1666304562000/work
-ruamel.yaml.clib @ file:///C:/b/abs_aarblxbilo/croot/ruamel.yaml.clib_1666302270884/work
+ruamel.yaml
+ruamel.yaml.clib
 scikit-learn
 scipy
-six @ file:///tmp/build/80754af9/six_1644875935023/work
+six
 smmap
 stack-data
 statsmodels
 streamlit
-tabula-py @ file:///C:/b/abs_03ektlox78/croot/tabula-py_1676300672187/work
+tabula-py
 tenacity
 text-unidecode
 threadpoolctl
 toml
-toolz @ file:///C:/b/abs_cfvk6rc40d/croot/toolz_1667464080130/work
+toolz
 tornado
-tqdm @ file:///C:/b/abs_f76j9hg7pv/croot/tqdm_1679561871187/work
+tqdm
 traitlets
 typing_extensions
 tzdata
 tzlocal
-urllib3 @ file:///C:/b/abs_3ce53vrdcr/croot/urllib3_1680254693505/work
+urllib3
 validators
 watchdog
 wcwidth
 Werkzeug
-win-inet-pton @ file:///C:/ci_310/win_inet_pton_1642658466512/work
-XlsxWriter @ file:///C:/b/abs_3copvk6ae8/croot/xlsxwriter_1685021146118/work
+win-inet-pton
+XlsxWriter
 zipp
 zstandard
