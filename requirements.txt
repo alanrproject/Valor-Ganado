@@ -18,10 +18,6 @@ charset-normalizer
 click
 colorama
 comm
-conda
-conda-content-trust
-conda-package-handling
-conda_package_streaming
 contourpy
 cookiecutter
 cryptography
