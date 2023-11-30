@@ -59,7 +59,6 @@ MarkupSafe
 matplotlib
 matplotlib-inline
 mdurl
-menuinst
 mkl-fft
 mkl-random
 mkl-service
