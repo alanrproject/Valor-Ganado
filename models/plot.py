@@ -70,7 +70,7 @@ app.layout = html.Div([
     dcc.Dropdown(
         id='wbs-dropdown',
         options=filtered_wbs_options,
-        value='3616_',
+        value='5050_',
         style={'font-family': 'Arial', 'font-size': '12px','width': '50%','margin': 'auto'}
     ),
     ], style={'width': '50%', 'margin': 'auto', 'display': 'flex', 'justifyContent': 'space-between', 'marginBottom': '20px'}),
@@ -142,19 +142,19 @@ def update_acum_bar_chart(start_date, end_date, wbs_value):
     data_filtered = df.loc[mask_wbs & mask_date]
 
     # Aplica el filtro adicional según la longitud y prefijo del Dropdown
-    if wbs_value == '3616_':
+    if wbs_value == '5050_':
         data_filtered = data_filtered[data_filtered['WBS'].str.len() == 9]
-    elif wbs_value == '3616_C000':
+    elif wbs_value == '5050_C000':
         data_filtered = data_filtered[(data_filtered['AcAcum'] != 0)]
-    elif wbs_value == '3616_P000':
+    elif wbs_value == '5050_P000':
         data_filtered = data_filtered[(data_filtered['AcAcum'] != 0)]
-    elif wbs_value == '3616_G000':
+    elif wbs_value == '5050_G000':
         data_filtered = data_filtered[(data_filtered['AcAcum'] != 0)]
-    elif wbs_value == '3616_S000':
+    elif wbs_value == '5050_S000':
         data_filtered = data_filtered[(data_filtered['AcAcum'] != 0)]
-    elif wbs_value == '3616_M000':
+    elif wbs_value == '5050_M000':
         data_filtered = data_filtered[(data_filtered['AcAcum'] != 0)]
-    elif wbs_value == '3616_E000':
+    elif wbs_value == '5050_E000':
         data_filtered = data_filtered[(data_filtered['AcAcum'] != 0)]
 
     # Limita la longitud máxima de caracteres en el eje X a 12
