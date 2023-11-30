@@ -18,7 +18,7 @@ source envforrender/bin/activate && gunicorn models.plot:server
 
 data directory: it contains the datasets of the project
 
-models directory: it contains
+models directory: it contains the python models for make the ETL process and plot model for make the dashboard app.
 
 ## Render app
 
