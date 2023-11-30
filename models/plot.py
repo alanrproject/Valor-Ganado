@@ -1,31 +1,23 @@
 import dash
-from dash import dcc
-from dash import html
+from dash import dcc, html
 from dash.dependencies import Input, Output
 import pandas as pd
 import numpy as np
 import plotly.graph_objs as go
 import plotly.express as px
 
-# Define la función de aproximación lineal
 def linear_approx(x, start, end):
-    # Calculate the length of the x array
     length = len(x)
-    # Calculate the slope based on the start and end values
     slope = (end - start) / length
-    # Create an empty array to store the predicted values
-    prediction = np.zeros(length)
-    # Loop through the array and fill it with the linear equation
-    for i in range(length):
-        prediction[i] = start + slope * i
-    # Return the prediction array
+    prediction = start + slope * np.arange(length)
     return prediction
+
 
 # Lee el dataframe base
 df = pd.read_excel('C:/Users/aruizr/OneDrive/9. Valor Ganado/data/procesed/df_wbs_pr.xlsx')
 #df = pd.read_excel('/Users/ramonalzate/Downloads/9. Valor Ganado/data/processed/df_wbs_pr.xlsx')
 app = dash.Dash(__name__)
-
+server = app.server
 max_char_length = 9
 filtered_wbs_options = [{'label': i, 'value': i} for i in df['WBS'].unique() if len(i) <= max_char_length]
 
