@@ -2,15 +2,35 @@
 
 ![Render web server for dashboard](readme.png)
 
+This project has been developed for obtain a degree in Master of science of Project Management. From here it is possible to improve the code for get a better forecasting of the project goals, the earned value aproximation have the possibility of been apply in any field and is a strong tool for management.
 
-Directorio Data: Cotiene la información que usa el modelo desde su origen crudo (raw) hasta la data procesada para usar en el tablero (procesed)
+## Instalation process
 
-Se debe actualizar la ruta de acceso a la data raw
+Configure your enviroment with:
 
-Directorio models: Contiene los scrips de python con los que se hará limpieza a la data cruda (raw)
+```
+PYTHON_VERSION == 3.10.11
+python3 -m venv envforrender && source envforrender/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
+source envforrender/bin/activate && gunicorn models.plot:server
+```
 
-Directorio notebooks: Contiene los notebooks con los modelos de visualización de la data proicesada para el informe de valor ganado.
+## content
 
-procedimiento para instalación ipykernel: explicar como instalarlo
+data directory: it contains the datasets of the project
 
-Explicar como instalar requirements.txt: En la terminal de comandos, usar pip install -r requirements.txt
+models directory: it contains
+
+## Render app
+
+This app its been running in render with this url:
+
+https://earnaedvalue.onrender.com/
+
+and with this confiration:
+
+```
+PYTHON_VERSION == 3.10.11
+python3 -m venv envforrender && source envforrender/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
+source envforrender/bin/activate && gunicorn models.plot:server
+```
+
