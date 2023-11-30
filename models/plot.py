@@ -46,7 +46,7 @@ def linear_approx(x, start, end, dfP, M):
     return prediction
 
 # Lee el dataframe base
-df = pd.read_excel('../data/processed/df_wbs_pr.xlsx')
+df = pd.read_excel('models/df_wbs_pr.xlsx')
 #df = pd.read_excel('/Users/ramonalzate/Downloads/9. Valor Ganado/data/processed/df_wbs_pr.xlsx')
 app = dash.Dash(__name__)
 n=0
