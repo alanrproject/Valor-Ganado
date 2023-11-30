@@ -1,23 +1,55 @@
 import dash
-from dash import dcc, html
+from dash import dcc
+from dash import html
 from dash.dependencies import Input, Output
 import pandas as pd
 import numpy as np
 import plotly.graph_objs as go
 import plotly.express as px
+import dash_table
+import locale
 
-def linear_approx(x, start, end):
-    length = len(x)
-    slope = (end - start) / length
-    prediction = start + slope * np.arange(length)
+# Define la función de aproximación lineal
+def linear_approx(x, start, end, dfP, M):
+    # Calculate the length of the x array
+    #length = len(x)
+    length = len(dfP)
+    # Calculate the slope based on the start and end values
+    #slope = (end - start) / length
+    #if len(dfP)>0:
+        #CanDia=(dfP.iloc[len(dfP)-1,8]-dfP.iloc[0,8]).days
+        #CanDia=CanDia.astype(int)
+        #if CanDia!=0:
+            #slope = (end - start) / CanDia
+        #else:
+            #slope = 0.0
+     ## convirtiendo a entero
+    # Create an empty array to store the predicted values
+    prediction = np.zeros(length)
+    # Loop through the array and fill it with the linear equation
+   
+    #PorcTot=0.0
+    for i in range(length):
+        #CanDia=(dfP.iloc[i,8]-dfP.iloc[0,8]).days
+            #prediction[i]=start+slope*CanDia
+        
+        if i==0:
+            prediction[i] =dfP.iloc[0,M]
+            ValAnt=prediction[i]
+            Porc=0.0
+        else:
+            Porc=(dfP.iloc[i,13]-dfP.iloc[i-1,13])/(dfP.iloc[len(dfP)-1,13]-dfP.iloc[0,13])
+            prediction[i] = ValAnt+(dfP.iloc[len(dfP)-1,M]-dfP.iloc[0,M])*Porc
+            ValAnt=prediction[i]
+        #PorcTot=PorcTot+Porc
+    # Return the prediction array 
     return prediction
 
-
 # Lee el dataframe base
-df = pd.read_excel('models/df_wbs_pr.xlsx')
+df = pd.read_excel('../data/processed/df_wbs_pr.xlsx')
 #df = pd.read_excel('/Users/ramonalzate/Downloads/9. Valor Ganado/data/processed/df_wbs_pr.xlsx')
 app = dash.Dash(__name__)
-server = app.server
+n=0
 max_char_length = 9
 filtered_wbs_options = [{'label': i, 'value': i} for i in df['WBS'].unique() if len(i) <= max_char_length]
 
@@ -41,7 +73,25 @@ app.layout = html.Div([
         value='3616_',
         style={'font-family': 'Arial', 'font-size': '12px','width': '50%','margin': 'auto'}
     ),
-    ], style={'width': '50%', 'margin': 'auto', 'display': 'flex', 'justifyContent': 'space-between'}),
+    ], style={'width': '50%', 'margin': 'auto', 'display': 'flex', 'justifyContent': 'space-between', 'marginBottom': '20px'}),
+
+    dash_table.DataTable(
+        id='table',
+        columns=[
+            {'name': 'WBS', 'id': 'WBS'},
+            {'name': 'Comienzo Plan', 'id': 'Comienzo'},
+            {'name': 'Fin Plan', 'id': 'Fin'},
+            {'name': 'BAC', 'id': 'LB Costo COP'},
+            {'name': 'EAC', 'id': 'EAC'},
+            {'name': 'Fin Real', 'id': 'FechaFin'},
+        ],
+        style_table={'height': '100px', 'overflowY': 'auto'},
+        style_cell={
+            'fontFamily': 'Arial',
+            'fontSize': '12px',
+            'textAlign': 'center',},
+        style_header={'fontWeight': 'bold'},
+    ),
 
     html.Div([
         dcc.Graph(id='time-series-graph', style={'width': '50%', 'display': 'inline-block'}),
@@ -54,6 +104,29 @@ app.layout = html.Div([
         dcc.Graph(id='acum-bar-chart', style={'width': '50%', 'display': 'inline-block'}),
     ], style={'width': '100%', 'display': 'flex', 'justifyContent': 'space-between'})
 ])
+
+@app.callback(
+    Output('table', 'data'),
+    [Input('date-picker', 'end_date'),
+     Input('wbs-dropdown', 'value')]
+)
+def update_table(end_date, wbs_value):
+    # Filtra los datos para la última fecha seleccionada y el WBS específico
+    mask = (df['Fecha'] == end_date) & (df['WBS'] == wbs_value)
+    filtered_data = df.loc[mask, ['WBS', 'Comienzo', 'Fin', 'EAC', 'FechaFin', 'LB Costo COP']]
+    
+    # Formatea las columnas de fecha
+    filtered_data['Comienzo'] = pd.to_datetime(filtered_data['Comienzo']).dt.strftime('%Y-%m-%d')
+    filtered_data['Fin'] = pd.to_datetime(filtered_data['Fin']).dt.strftime('%Y-%m-%d')
+    filtered_data['FechaFin'] = pd.to_datetime(filtered_data['FechaFin']).dt.strftime('%Y-%m-%d')
+    filtered_data['EAC'] = filtered_data['EAC'].apply(lambda x: '{:,.0f}'.format(x))
+    filtered_data['LB Costo COP'] = filtered_data['LB Costo COP'].apply(lambda x: '{:,.0f}'.format(x))
+
+    # Convierte los datos a formato de diccionario para la tabla
+    table_data = filtered_data.to_dict('records')
+    
+    return table_data
+
 
 # Define el callback para el gráfico de barras acumulativas
 @app.callback(
@@ -88,8 +161,14 @@ def update_acum_bar_chart(start_date, end_date, wbs_value):
     data_filtered['WBS'] = data_filtered['WBS'].apply(lambda x: x[:12])
 
     # Crea el gráfico de barras
-    fig = px.bar(data_filtered, x='WBS', y='AcAcum', title=f'AC POR WBS',
-                 labels={'AcAcum': 'AC', 'WBS': 'WBS'})
+    fig = px.bar(data_filtered, x='WBS', y='AcAcum', color=data_filtered['WBS'].str[:9], title=f'AC POR WBS',
+                 labels={'AcAcum': '', 'WBS': 'WBS'},)
+    fig.update_traces(showlegend=False)
+    fig.update_layout(
+        plot_bgcolor='white',  # Fondo del área del gráfico
+        paper_bgcolor='white',  # Fondo del papel o lienzo del gráfico
+        title=dict(text='AC POR WBS', x=0.5,)
+    )
     
     return fig
 
@@ -183,24 +262,43 @@ def update_spi_gauge(end_date, wbs_value):
 
 def update_graph(start_date, end_date, wbs_value):
     mask = (df['Fecha'] >= start_date) & (df['Fecha'] <= end_date) & (df['WBS'] == wbs_value)
+    #mask1=(df['Fecha'] >end_date) & (df['Fecha'] <= end_date) & (df['WBS'] == wbs_value)
     data = df.loc[mask]
     N_end_date= data.loc[data.index[(len(data.index)-1)],'FechaFin']
-      
+    #data1=df.loc[mask1]
+
+    
+    
 
     # Filter the 'PV' series based on the selected 'WBS' value
     pv_data = df.loc[df['WBS'] == wbs_value]
     
     # Calculate the 'EACt' series from 'end_date' to the last date
     eact_data = df.loc[(df['Fecha'] >= end_date) & (df['Fecha'] <= N_end_date) & (df['WBS'] == wbs_value)].copy()
-    newdate = pd.DataFrame({'WBS':[wbs_value], 'Fecha':[N_end_date]})
-    eact_data = pd.concat([eact_data,newdate],ignore_index=True)
+    if len(eact_data)>0:
+
+    #Se ingresa un registro a eact_data con los datos del punto final donde debe terminar la proyeccion
+        eact_data.loc[len(eact_data)]={}
+        eact_data.iloc[len(eact_data)-1,8]=N_end_date
+        eact_data.iloc[len(eact_data)-1,24]=N_end_date
+        eact_data.iloc[len(eact_data)-1,12]=data.loc[data.index[(len(data.index)-1)],'EAC']
+        eact_data.iloc[len(eact_data)-1,13]=data.loc[data.index[(len(data.index)-1)],'LB Costo COP']
+        eact_data.iloc[len(eact_data)-1,14]=data.loc[data.index[(len(data.index)-1)],'LB Costo COP']
+        eact_data.iloc[len(eact_data)-1,19]=data.loc[data.index[(len(data.index)-1)],'EAC']
+
+
     vectors_to_proyect = {'AcAcum':'EAC', 'EV':'LB Costo COP'}
     for key,value in vectors_to_proyect.items():
+        if key =='AcAcum':
+            M=12
+            end_value = data.loc[data.index[(len(data.index)-1)],'EAC']
+        else:
+            M=14
+            end_value = data.loc[data.index[(len(data.index)-1)],'LB Costo COP']
         start_value = df.loc[(df['Fecha'] == end_date) & (df['WBS'] == wbs_value), key].values[0]
         x_values = np.array(range(len(data), len(data) + len(eact_data)))
-        end_value = df.loc[(df['Fecha'] == end_date) & (df['WBS'] == wbs_value), value].values[0]
         print(x_values)
-        eact_data[f'{value}t'] = linear_approx(x_values, start_value, end_value)
+        eact_data[f'{value}t'] = linear_approx(x_values, start_value, end_value,eact_data,M)
     
     #_______________________
     # Grafica tabla
@@ -243,16 +341,15 @@ def update_graph(start_date, end_date, wbs_value):
     ]
 
     table = go.Table(
-        header=dict(values=[ 'AC', 'EV', 'PV', 'EAC']),
+        header=dict(values=[ 'AC', 'EV', 'PV']),
         cells=dict(values=[
         '{:,.0f}'.format(last_date_data['AcAcum'].iloc[0] / 1000000),
         '{:,.0f}'.format(last_date_data['EV'].iloc[0] / 1000000),
-        '{:,.0f}'.format(last_date_data['PV'].iloc[0] / 1000000),
-        '{:,.0f}'.format(last_date_data['EAC'].iloc[0] / 1000000)
+        '{:,.0f}'.format(last_date_data['PV'].iloc[0] / 1000000)
     ]),
         visible=True,
-        domain=dict(x=[0, 0.5], y=[0, 1]),
-        columnwidth=[0.8, 0.8, 0.8, 0.8]
+        domain=dict(x=[0.1, 0.5], y=[0, 1]),
+        columnwidth=[0.8, 0.8, 0.8]
     )
     layout = go.Layout(
         title='EARNED VALUE',
@@ -261,7 +358,7 @@ def update_graph(start_date, end_date, wbs_value):
             # ... (si tienes botones de actualización)
         ],
         annotations=[dict(text='Valores', showarrow=False, x=0.5, y=1.15, xref='paper', yref='paper')],
-        yaxis=dict(title='Valor'),
+        yaxis=dict(title='Valor',tickformat=',.0f'),
     )
 
     return {'data': traces+ [table], 'layout': go.Layout(title='EARNED VALUE')}
@@ -300,8 +397,8 @@ def update_graph_avance(start_date, end_date, wbs_value):
 
     layout_avance = go.Layout(
         title='CURVA S',
-        xaxis=dict(title='Fecha'),
-        yaxis=dict(title='Valor'),
+        xaxis=dict(title=''),
+        yaxis=dict(title='',tickformat='.0%',hoverformat='.0%'),
         showlegend=True,
         annotations=[
         {
