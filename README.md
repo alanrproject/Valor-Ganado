@@ -1,6 +1,6 @@
 ## EARNED VALUE DASHBOARD WITH FORECASTING OF PROYECTS.
 
-!readme.png Render web server for dashboard
+![Render web server for dashboard](readme.png)
 
 
 Directorio Data: Cotiene la información que usa el modelo desde su origen crudo (raw) hasta la data procesada para usar en el tablero (procesed)
