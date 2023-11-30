@@ -1,12 +1,11 @@
 import dash
-from dash import dcc
+from dash import dcc, html, dash_table
 from dash import html
 from dash.dependencies import Input, Output
 import pandas as pd
 import numpy as np
 import plotly.graph_objs as go
 import plotly.express as px
-import dash_table
 import locale
 
 # Define la función de aproximación lineal
@@ -49,6 +48,7 @@ def linear_approx(x, start, end, dfP, M):
 df = pd.read_excel('models/df_wbs_pr.xlsx')
 #df = pd.read_excel('/Users/ramonalzate/Downloads/9. Valor Ganado/data/processed/df_wbs_pr.xlsx')
 app = dash.Dash(__name__)
+server = app.server
 n=0
 max_char_length = 9
 filtered_wbs_options = [{'label': i, 'value': i} for i in df['WBS'].unique() if len(i) <= max_char_length]
